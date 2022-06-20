@@ -9,6 +9,15 @@ RailsAdmin.config do |config|
   # end
   # config.current_user_method(&:current_user)
 
+  # enforce devise authentication and isadmin? check
+  config.authenticate_with do
+    warden.authenticate! scope: :user
+
+    unless current_user.isadmin
+      redirect_to main_app.root_path, alert: 'You must have Administrator privileges to view that page'
+    end
+  end
+
   ## == CancanCan ==
   # config.authorize_with :cancancan
 
