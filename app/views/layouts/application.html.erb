@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><% if content_for?(:page_title) %><%= yield(:page_title) %> | <%= appname %><% else %><%= appname %><% end %></title>
+    <% if content_for?(:page_description) %><meta name="description" content="<%= yield(:page_description) %>"/><% end %>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+    <nav class="navbar navbar-light bg-gray-800">
+      <div class="container-fluid p-6">
+        <ul class="navbar-nav flex flex-row space-x-5">
+          <li class="font-bold text-white"><a href="/"><%= appname %></a></li>
+          <% if user_signed_in? %><li class="text-white"><a href="/welcome">welcome</a></li><% end %>
+          <li class="text-white hover:text-gray-400"><a href="/about">about</a></li>
+          <% if user_signed_in? %><li class="nav-item text-white"><%= link_to 'edit profile', edit_user_registration_path %></li>
+          <% if user_signed_in? && current_user.isadmin? %><li><%= link_to 'admin', rails_admin_path %></li><% end %>
+          <%# link_to 'sign out', destroy_user_session_path, method: 'delete', status: 303 %>
+          <li class="nav-item text-white hover:text-gray-400"><%= link_to "sign out", destroy_user_session_path, data: { "turbo-method": :delete } %></li><% else %>
+          <li class="nav-item text-white hover:text-gray-400"><%= link_to 'sign up', new_user_registration_path %></li>
+          <li class="nav-item text-white hover:text-gray-400"><%= link_to 'sign in', new_user_session_path %></li><% end %>
+        </ul>
+      </div>
+    </nav>
+  </head>
+
+  <body class="bg-gray-100">
+
+    <main class="container mx-auto mt-8 px-5 pb-5 bg-white rounded-md">
+      <% if notice %><div role="banner" class="block absolute top-35 right-10 p-4 bg-green-100 border-green-500 rounded-md text-green-900 shadow-md"><%= notice %></div><% end %>
+      <% if alert %><div role="alert" class="block absolute top-35 right-10 p-4 bg-red-100 border-red-500 rounded-md text-red-900 shadow-md"><%= alert %></div><% end %>
+      <%= yield %>
+    </main>
+  </body>
+</html>

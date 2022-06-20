@@ -1,0 +1,28 @@
+<h1 class="pt-6 pb-2 text-4xl font-semibold">Sign in to your <%= appname %> account</h1>
+
+<div class="container pt-2">
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <div>
+    <%= f.label :email, class: "block text-gray-700 text-sm font-bold mt-4" %>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email",  class: "rounded-sm" %>
+  </div>
+
+  <div>
+    <%= f.label :password, class: "block text-gray-700 text-sm font-bold mt-4" %>
+    <%= f.password_field :password, autocomplete: "current-password",  class: "rounded-sm" %>
+  </div>
+
+  <% if devise_mapping.rememberable? %>
+    <div class="field">
+      <%= f.check_box :remember_me %>
+      <%= f.label :remember_me, class: "text-gray-700 text-sm font-bold mt-4" %>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit "sign in", class: "mt-6 rounded-lg py-3 px-5 bg-green-400 inline-block font-medium hover:bg-green-600 active:bg-green-700 focus:outline-none focus:ring focus:ring-ring-300" %>
+  </div>
+<% end %>
+</div>
+
+<div><%= render "devise/shared/links" %></div>
