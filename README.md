@@ -3,12 +3,14 @@ README
 
 A rebuild with devlog notes on how to build a new Rails 7 app with tailwind CSS, PostgreSQL db, RailsAdmin, Devise authentication.
 
+Now updated to Rails 7.0.4.
+
 Prerequisites
 -------------
 
 __mailcatcher__
 
-`gem install mailcatcher -- --with-cflags="-Wno-error=implicit-function-declaration"`
+`gem install mailcatcher`
 
 You can start it with just mailcatcher - it runs a local webserver at localhost:1080 and catches SMTP locally at :1025
 
@@ -16,7 +18,7 @@ __pg__
 
 `gem install pg`
 
-If it doesn't work, install the Postgres headers. On a Mac the fastest way to do this is install Postgres itself:
+If install fails, you likely need to install the Postgres headers. On a Mac the fastest way to do this is install Postgres itself:
 
 `brew install postgres`
 
@@ -58,7 +60,24 @@ end
 
 Test that UUID indexing is working:
 
-`bin/rails g scaffold Post title:string body:text ispublished:boolean`
+`bin/rails g scaffold Post title:string body:text ispublished:boolean --no-scaffold-stylesheet
+`
+
+Now, modify the migration that was just generated to use the new UUID
+
+Modify the migration to use the new UUID feature
+```
+class CreatePosts < ActiveRecord::Migration[7.0]
+  def change
+    create_table :posts, id: :uuid do |t|
+      t.string :title
+      t.text :body
+      t.boolean :ispublished
+      t.timestamps
+    end
+  end
+end
+```
 
 Add an appname and helper to `app/helpers/application_helper.rb':
 
