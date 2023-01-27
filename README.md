@@ -295,3 +295,22 @@ Now copy over and tweak devise views:
 And install the rails_admin gem.
 
 bundle add 'rails_admin'
+
+Start mailcatcher, sign up as a new user, then navigate to localhost:1080 to see your email in mailcatcher to confirm your account.
+
+To become an admin (because there are none) use the rails console:
+
+```
+rails c
+m = User.first
+m.isadmin = true
+m.save
+```
+
+Now when you refresh the page you should see the new 'admin' menu item.
+
+You should probably delete the posts controllers now to build your app.
+
+
+
+
